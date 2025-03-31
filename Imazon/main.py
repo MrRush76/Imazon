@@ -33,7 +33,13 @@ def create_tables(db):
 class ImazonDatabase(Database):
     def __init__(self, db_path):
         super().__init__(db_path)
+        self.connection = sqlite3.connect(db_path)
+        self.cursor = self.connection.cursor()
         self.create_tables()
+
+    def execute(self, query, params=()):
+        self.cursor.execute(query, params)
+        return self.cursor
 
     def create_tables(self):
         db = sqlite3.connect(self.databaseRef)
